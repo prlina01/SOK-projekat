@@ -111,13 +111,12 @@ class CsvDataSourcePlugin(DataSourcePlugin):
 
         directed = True
 
-        metadata_path = os.path.join(directory, "graph.json")
-
-        if os.path.isfile(metadata_path):
-
-            metadata = DataSourceService.read_json(metadata_path)
-
-            directed = bool(metadata.get("directed", True))
+        for metadata_name in ("graph.json", "dir.json"):
+            metadata_path = os.path.join(directory, metadata_name)
+            if os.path.isfile(metadata_path):
+                metadata = DataSourceService.read_json(metadata_path)
+                directed = bool(metadata.get("directed", True))
+                break
 
         return DataSourceService.build_graph(
             nodes,
