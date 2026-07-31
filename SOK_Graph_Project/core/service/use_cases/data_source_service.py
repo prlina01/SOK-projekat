@@ -206,6 +206,11 @@ class DataSourceService:
 
     @staticmethod
     def dict_to_graph(data):
+        if not isinstance(data, dict):
+            return DataSourceService.document_to_graph(data)
+
+        if "nodes" not in data or "edges" not in data:
+            return DataSourceService.document_to_graph(data)
 
         nodes = data.get("nodes", [])
         edges = data.get("edges", [])
@@ -220,6 +225,74 @@ class DataSourceService:
             edge_pairs,
             directed=data.get("directed", True)
         )
+
+    @staticmethod
+    def document_to_graph(document):
+        """Map arbitrary nested JSON objects to nodes and relationships."""
+        nodes = []
+        edges = []
+        object_ids = {}
+        used_ids = set()
+
+        def unique_index(value, path):
+            candidate = str(value) if value not in (None, "") else path
+            base = candidate
+            suffix = 2
+            while candidate in used_ids:
+                candidate = f"{base}_{suffix}"
+                suffix += 1
+            used_ids.add(candidate)
+            return candidate
+
+        def collect(value, path="root"):
+            if isinstance(value, dict):
+                index = unique_index(value.get("@id", value.get("id")), path)
+                object_ids[id(value)] = index
+                scalar_data = {}
+                for key, item in value.items():
+                    if key in {"@id", "id"}:
+                        continue
+                    if isinstance(item, (dict, list)):
+                        continue
+                    scalar_data[key] = DataSourceService.parse_scalar(item)
+                nodes.append({"index": index, "data": scalar_data})
+                for key, item in value.items():
+                    if isinstance(item, dict):
+                        collect(item, f"{path}.{key}")
+                    elif isinstance(item, list):
+                        for position, child in enumerate(item):
+                            if isinstance(child, dict):
+                                collect(child, f"{path}.{key}[{position}]")
+                return
+
+            if isinstance(value, list):
+                for position, item in enumerate(value):
+                    if isinstance(item, (dict, list)):
+                        collect(item, f"{path}[{position}]")
+
+        collect(document)
+        known_ids = {node["index"] for node in nodes}
+
+        def connect(value):
+            if isinstance(value, dict):
+                source = object_ids[id(value)]
+                for key, item in value.items():
+                    if isinstance(item, dict):
+                        edges.append((source, object_ids[id(item)]))
+                        connect(item)
+                    elif isinstance(item, list):
+                        for child in item:
+                            if isinstance(child, dict):
+                                edges.append((source, object_ids[id(child)]))
+                                connect(child)
+                    elif key not in {"@id", "id"} and str(item) in known_ids:
+                        edges.append((source, str(item)))
+            elif isinstance(value, list):
+                for item in value:
+                    connect(item)
+
+        connect(document)
+        return DataSourceService.build_graph(nodes, edges, directed=True)
 
     # --------------------------------------------------
     # CYCLE DETECTION
