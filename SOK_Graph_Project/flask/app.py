@@ -102,7 +102,6 @@ def render_index(
 
     graph = active_workspace.graph
     workspace_filter = active_workspace.search_filter
-    workspace_filter.set_source_graph(graph)
     app.config["GRAPH"] = workspace_filter.filtered_graph
 
     selected_visualizer = active_workspace.visualizer_type

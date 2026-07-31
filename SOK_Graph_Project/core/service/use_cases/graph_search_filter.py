@@ -44,7 +44,8 @@ class GraphSearchFilter:
 		query = (query or "").strip().lower()
 
 		if not query:
-			return self._clone_graph(self.filtered_graph)
+			self._filtered_graph = self._clone_graph(self.filtered_graph)
+			return self.filtered_graph
 
 		matched_nodes = []
 		for node in self.filtered_graph.nodes:
@@ -52,7 +53,8 @@ class GraphSearchFilter:
 			if self._node_contains(node_data, query):
 				matched_nodes.append(node)
 
-		return self._build_subgraph(self.filtered_graph, matched_nodes)
+		self._filtered_graph = self._build_subgraph(self.filtered_graph, matched_nodes)
+		return self.filtered_graph
 
 	def _build_subgraph(self, graph: Graph, nodes: list) -> Graph:
 		node_ids = {str(node.index) for node in nodes}
