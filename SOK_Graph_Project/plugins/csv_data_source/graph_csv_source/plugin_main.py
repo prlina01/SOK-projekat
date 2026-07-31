@@ -40,19 +40,16 @@ class CsvDataSourcePlugin(DataSourcePlugin):
 
             reader = csv.DictReader(f)
 
-            for row in reader:
+            for row_number, row in enumerate(reader, start=1):
 
-                node_id = row.get("id")
-
-                if not node_id:
-                    continue
+                node_id = row.get("id") or f"row-{row_number}"
 
                 nodes.append({
                     "index": node_id,
                     "data": {
                         k: DataSourceService.parse_scalar(v)
                         for k, v in row.items()
-                        if k not in ["id", "connected_to"]
+                        if k not in ["id", "connected_to"] and v != ""
                     }
                 })
 
