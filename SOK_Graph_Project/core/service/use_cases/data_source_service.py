@@ -1,6 +1,7 @@
 import json
 import os
 from collections import defaultdict
+from datetime import date, datetime
 
 from graph.api.model.node import Node
 from graph.api.model.edge import Edge
@@ -8,6 +9,51 @@ from graph.api.model.graph import Graph
 
 
 class DataSourceService:
+
+    @staticmethod
+    def parse_scalar(value):
+        if not isinstance(value, str):
+            return value
+
+        text = value.strip()
+        if text == "":
+            return ""
+
+        lowered = text.lower()
+        if lowered == "true":
+            return True
+        if lowered == "false":
+            return False
+        if lowered in {"null", "none"}:
+            return None
+
+        try:
+            return int(text)
+        except ValueError:
+            pass
+
+        try:
+            return float(text)
+        except ValueError:
+            pass
+
+        try:
+            if "T" in text or " " in text:
+                return datetime.fromisoformat(text.replace("Z", "+00:00"))
+            return date.fromisoformat(text)
+        except ValueError:
+            return value
+
+    @staticmethod
+    def normalize_values(value):
+        if isinstance(value, dict):
+            return {
+                key: DataSourceService.normalize_values(item)
+                for key, item in value.items()
+            }
+        if isinstance(value, list):
+            return [DataSourceService.normalize_values(item) for item in value]
+        return DataSourceService.parse_scalar(value)
 
     # --------------------------------------------------
     # PATH VALIDATION
@@ -74,7 +120,15 @@ class DataSourceService:
             os.makedirs(directory, exist_ok=True)
 
         with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=4, ensure_ascii=False)
+            json.dump(
+                payload,
+                f,
+                indent=4,
+                ensure_ascii=False,
+                default=lambda value: value.isoformat()
+                if isinstance(value, (date, datetime))
+                else str(value)
+            )
 
     # --------------------------------------------------
     # GRAPH BUILDING
@@ -89,7 +143,7 @@ class DataSourceService:
         for node in nodes:
             node_obj = Node(
                 index=node["index"],
-                data=node.get("data", {})
+                data=DataSourceService.normalize_values(node.get("data", {}))
             )
             node_objects.append(node_obj)
             node_map[node_obj.index] = node_obj

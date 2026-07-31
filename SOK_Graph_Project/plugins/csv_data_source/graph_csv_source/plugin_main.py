@@ -50,7 +50,8 @@ class CsvDataSourcePlugin(DataSourcePlugin):
                 nodes.append({
                     "index": node_id,
                     "data": {
-                        k: v for k, v in row.items()
+                        k: DataSourceService.parse_scalar(v)
+                        for k, v in row.items()
                         if k not in ["id", "connected_to"]
                     }
                 })
@@ -92,7 +93,8 @@ class CsvDataSourcePlugin(DataSourcePlugin):
                 nodes.append({
                     "index": node_id,
                     "data": {
-                        k: v for k, v in row.items()
+                        k: DataSourceService.parse_scalar(v)
+                        for k, v in row.items()
                         if k != "id"
                     }
                 })
