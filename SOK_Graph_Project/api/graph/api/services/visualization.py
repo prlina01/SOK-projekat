@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 
 def graph_data(graph):
+    """Convert a Graph into the browser-neutral visualization payload."""
     return {
         "nodes": [
             {"id": str(node.index), "data": node.data or {}}
@@ -25,6 +26,7 @@ def graph_data(graph):
 
 
 def visualization_html(plugin_id, graph, workspace_id, options):
+    """Return the HTML string required by the VisualizationPlugin contract."""
     model = {
         "plugin_id": plugin_id,
         "workspace_id": str(workspace_id),

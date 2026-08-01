@@ -2,11 +2,23 @@
 from .edge import Edge
 from .node import Node
 from dataclasses import dataclass
+from typing import Any
 
 @dataclass
 class Graph:
+    """Shared graph model exchanged between the platform and every plugin.
 
-    def __init__(self, nodes=None, edges=None, cyclic=None, directed=None):
+    ``directed`` describes edge direction, while ``cyclic`` records whether
+    the represented graph contains at least one cycle.
+    """
+
+    def __init__(
+        self,
+        nodes: list[Node] | None = None,
+        edges: list[Edge] | None = None,
+        cyclic: bool | None = None,
+        directed: bool | None = None,
+    ):
         self.nodes = nodes
         self.edges = edges
         self.cyclic = cyclic
@@ -44,13 +56,16 @@ class Graph:
     def directed(self, value):
         self._directed = value
 
-    def addNode(self, node):
+    def addNode(self, node: Node) -> None:
+        """Add a validated node to the graph."""
         self.nodes.append(self._validateNode(node))
 
-    def addEdge(self, edge):
+    def addEdge(self, edge: Edge) -> None:
+        """Add a validated edge to the graph."""
         self.edges.append(self._validateEdge(edge))
 
-    def removeEdgeByNodes(self, node1, node2):
+    def removeEdgeByNodes(self, node1: Node, node2: Node) -> None:
+        """Remove the first edge connecting the supplied endpoints."""
         node1_id = self._getNodeId(node1)
         node2_id = self._getNodeId(node2)
 
@@ -67,7 +82,8 @@ class Graph:
 
         raise ValueError("No edge found for the provided two nodes")
 
-    def removeEdge(self, edge):
+    def removeEdge(self, edge: Edge) -> None:
+        """Remove an edge instance from the graph."""
         for idx, current_edge in enumerate(self.edges):
             if current_edge is edge:
                 del self.edges[idx]
@@ -75,7 +91,8 @@ class Graph:
 
         raise ValueError("Provided edge does not exist in graph")
 
-    def removeNode(self, node):
+    def removeNode(self, node: Node) -> None:
+        """Remove an unconnected node instance."""
         target_index = None
         for idx, current_node in enumerate(self.nodes):
             if current_node is node:
@@ -90,7 +107,8 @@ class Graph:
 
         del self.nodes[target_index]
 
-    def removeNodeByIndex(self, index):
+    def removeNodeByIndex(self, index: Any) -> None:
+        """Remove an unconnected node identified by its index."""
         target_node = None
 
         for node in self.nodes:
@@ -123,7 +141,8 @@ class Graph:
 
         return False
     
-    def getConnectedOf(self, node):
+    def getConnectedOf(self, node: Node) -> list[Node]:
+        """Return nodes reached by outgoing edges from ``node``."""
         node_id = self._getNodeId(node)
         matched_nodes = [
             edge.node2 for edge in self.edges
@@ -172,7 +191,8 @@ class Graph:
             return None
         return str(getattr(node, "index", None))
 
-    def toDict(self):
+    def toDict(self) -> dict[str, Any]:
+        """Serialize the graph to the canonical API dictionary format."""
         return {
             "nodes": [
                 {

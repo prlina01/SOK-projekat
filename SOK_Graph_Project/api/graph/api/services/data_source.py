@@ -9,6 +9,12 @@ from graph.api.model.graph import Graph
 
 
 class DataSourceService:
+    """Shared, framework-independent helpers used by Data Source plugins.
+
+    The helpers validate source paths, preserve scalar types, translate the
+    canonical and generic document forms into API graph objects, serialize
+    graphs, and calculate cycle metadata.
+    """
 
     @staticmethod
     def parse_scalar(value):
