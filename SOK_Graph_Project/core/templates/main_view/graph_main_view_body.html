@@ -108,7 +108,8 @@ async function updateGraph(endpoint, payload) {
     });
 
     if (!response.ok) {
-        console.error("Request failed", endpoint);
+        const result = await response.json().catch(() => ({}));
+        window.alert(result.error || "Graph request failed");
         return;
     }
 
@@ -121,10 +122,9 @@ async function updateGraph(endpoint, payload) {
         if (window.renderCurrentVisualization) {
             window.renderCurrentVisualization();
         }
-        return;
     }
 
-    if (result.graph_html !== undefined) {
+    else if (result.graph_html !== undefined) {
         window.currentVisualizationModel = null;
 
         const container = document.getElementById("graph-container");
@@ -153,6 +153,26 @@ async function updateGraph(endpoint, payload) {
 
         execNext(0);
     }
+
+    if (result.tree_view_html !== undefined) {
+        replaceViewContent("tree-view-content", result.tree_view_html);
+    }
+
+    if (result.bird_view_html !== undefined) {
+        replaceViewContent("bird-canvas", result.bird_view_html);
+    }
+}
+
+function replaceViewContent(containerId, html) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = html;
+    Array.from(container.querySelectorAll("script")).forEach(original => {
+        const script = document.createElement("script");
+        script.textContent = original.textContent;
+        document.body.appendChild(script);
+        original.remove();
+    });
 }
 
 function applyFilter() {

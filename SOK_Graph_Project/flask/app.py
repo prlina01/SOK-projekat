@@ -389,7 +389,10 @@ def apply_filter():
     value = payload.get("value", "")
     selected_visualizer = payload.get("type", workspace.visualizer_type)
 
-    filtered_graph = workspace.search_filter.filter(attribute, operator, value)
+    try:
+        filtered_graph = workspace.search_filter.filter(attribute, operator, value)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
     try:
         visualizer = plugin_service.get_plugin("visualization", selected_visualizer, active_only=True)
@@ -405,7 +408,9 @@ def apply_filter():
 
     return jsonify({
         "graph_html": "",
-        "visualization_model": visualization_model
+        "visualization_model": visualization_model,
+        "tree_view_html": TreeView(filtered_graph).render(workspace_id=workspace.id),
+        "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })
 
 
@@ -443,7 +448,9 @@ def clear_filters():
 
     return jsonify({
         "graph_html": "",
-        "visualization_model": visualization_model
+        "visualization_model": visualization_model,
+        "tree_view_html": TreeView(filtered_graph).render(workspace_id=workspace.id),
+        "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })
 
 
@@ -474,7 +481,9 @@ def search_graph():
 
     return jsonify({
         "graph_html": "",
-        "visualization_model": visualization_model
+        "visualization_model": visualization_model,
+        "tree_view_html": TreeView(result_graph).render(workspace_id=workspace.id),
+        "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })
 
 
