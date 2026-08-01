@@ -224,6 +224,7 @@
 
         const closeBtn = modal.querySelector(".simple-visualizer-close-btn");
         const modalBody = modal.querySelector(".simple-visualizer-modal-body");
+        let detailsPinned = false;
 
         const nodes = graphLayer.append("g")
             .selectAll("g")
@@ -231,6 +232,12 @@
             .enter()
             .append("g")
             .attr("class", "node")
+            .on("mouseenter", function (event, d) {
+                if (!detailsPinned) showNodeDetails(d, false);
+            })
+            .on("mouseleave", function () {
+                if (!detailsPinned) hideModal();
+            })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -242,7 +249,7 @@
             .on("click", function (event, d) {
                 event.stopPropagation();
                 selectNode(d.id);
-                showNodeDetails(d);
+                showNodeDetails(d, true);
                 notifyBirdView({ nodeWidth: nodeRadius * 2, nodeHeight: nodeRadius * 2, nodeRadius: nodeRadius });
 
                 window.dispatchEvent(new CustomEvent("graph-node-selected", {
@@ -286,7 +293,8 @@
             });
         }
 
-        function showNodeDetails(nodeData) {
+        function showNodeDetails(nodeData, pinned = false) {
+            detailsPinned = pinned;
             const rows = Object.entries(nodeData.data || {})
                 .map(([key, value]) => `
                     <tr>
@@ -306,11 +314,12 @@
                 </table>
             `;
 
-            overlay.style.display = "block";
+            overlay.style.display = pinned ? "block" : "none";
             modal.style.display = "block";
         }
 
         function hideModal() {
+            detailsPinned = false;
             overlay.style.display = "none";
             modal.style.display = "none";
         }
@@ -401,6 +410,8 @@
                     .attr("dy", i === 0 ? 0 : lineHeight)
                     .text(line);
             });
+
+            group.append("title").text(lines.join("\n"));
         });
 
         function updateSelectedNode() {
