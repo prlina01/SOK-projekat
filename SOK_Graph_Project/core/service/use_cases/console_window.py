@@ -59,6 +59,8 @@ class ConsoleWindow:
 			return self._create_edge(args)
 		if command_name == "delete_edge":
 			return self._delete_edge(args)
+		if command_name == "edit_edge":
+			return self._edit_edge(args)
 
 		raise ValueError(f"Unsupported command: {command_name}")
 
@@ -143,7 +145,15 @@ class ConsoleWindow:
 		if self._find_edge(graph, node1, node2) is not None:
 			raise ValueError("Edge already exists")
 
-		graph.addEdge(Edge(node1=node1, node2=node2))
+		edge_id = args.get("id")
+		if edge_id is not None and self._find_edge_by_id(graph, edge_id) is not None:
+			raise ValueError(f"Edge with id '{edge_id}' already exists")
+
+		edge_data = {
+			key: value for key, value in args.items()
+			if key not in {"id", "n1", "n2"}
+		}
+		graph.addEdge(Edge(node1=node1, node2=node2, index=edge_id, data=edge_data))
 		self.workspace.search_filter.set_source_graph(graph)
 
 		return {
@@ -168,6 +178,36 @@ class ConsoleWindow:
 		return {
 			"display_graph": self.workspace.search_filter.filtered_graph,
 			"message": f"Deleted edge {node1_id}->{node2_id}",
+		}
+
+	def _edit_edge(self, args: dict):
+		graph = self.workspace.graph
+		edge_id = args.get("id")
+
+		if edge_id is not None:
+			edge = self._find_edge_by_id(graph, edge_id)
+		else:
+			node1_id = self._required_arg(args, "n1")
+			node2_id = self._required_arg(args, "n2")
+			node1 = self._find_node(graph, node1_id)
+			node2 = self._find_node(graph, node2_id)
+			edge = self._find_edge(graph, node1, node2) if node1 and node2 else None
+
+		if edge is None:
+			raise ValueError("Edge was not found")
+
+		updates = {
+			key: value for key, value in args.items()
+			if key not in {"id", "n1", "n2"}
+		}
+		if not updates:
+			raise ValueError("edit_edge requires at least one attribute to update")
+
+		edge.data.update(updates)
+		self.workspace.search_filter.set_source_graph(graph)
+		return {
+			"display_graph": self.workspace.search_filter.filtered_graph,
+			"message": f"Edited edge {edge.index or ''}".strip(),
 		}
 
 	def _required_arg(self, args: dict, name: str):
@@ -215,6 +255,12 @@ class ConsoleWindow:
 			if not getattr(graph, "directed", False) and reverse_match:
 				return edge
 
+		return None
+
+	def _find_edge_by_id(self, graph, edge_id):
+		for edge in graph.edges:
+			if str(getattr(edge, "index", None)) == str(edge_id):
+				return edge
 		return None
 
 	def _node_has_edges(self, graph, node):
