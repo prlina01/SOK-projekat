@@ -17,3 +17,10 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["service*"]
+
+[tool.setuptools.package-data]
+service = [
+    "templates/*/*.html",
+    "assets/main_view/*.css",
+    "assets/main_view/*.js",
+]

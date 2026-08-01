@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 import subprocess
+from importlib.resources import files as resource_files
 
 from jinja2 import ChoiceLoader, FileSystemLoader
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory
@@ -26,7 +27,8 @@ workspace_manager = WorkspaceManager()
 
 # Allow Flask to load templates both from the web app and platform libraries.
 web_templates = os.path.join(os.path.dirname(__file__), "templates")
-platform_templates = os.path.join(project_root, "platform", "templates")
+platform_package_root = resource_files("service")
+platform_templates = os.fspath(platform_package_root.joinpath("templates"))
 
 app.jinja_loader = ChoiceLoader([
     FileSystemLoader(web_templates),
@@ -248,7 +250,7 @@ def uninstall_plugin():
 
 @app.route("/platform-assets/main_view/<path:filename>")
 def platform_main_view_assets(filename):
-    assets_dir = os.path.join(project_root, "platform", "assets", "main_view")
+    assets_dir = os.fspath(platform_package_root.joinpath("assets", "main_view"))
     return send_from_directory(assets_dir, filename)
 
 
