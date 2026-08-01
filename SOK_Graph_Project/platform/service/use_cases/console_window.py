@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from graph.api.model.edge import Edge
 from graph.api.model.node import Node
-from service.use_cases.data_source_service import DataSourceService
+from graph.api.services.data_source import DataSourceService
 
 if TYPE_CHECKING:
 	from service.use_cases.workspace import Workspace

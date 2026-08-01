@@ -1,5 +1,5 @@
 from graph.api.services.plugin import DataSourcePlugin
-from service.use_cases.data_source_service import DataSourceService
+from graph.api.services.data_source import DataSourceService
 
 
 class JsonDataSourcePlugin(DataSourcePlugin):

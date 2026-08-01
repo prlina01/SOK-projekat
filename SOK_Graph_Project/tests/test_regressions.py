@@ -109,7 +109,7 @@ class VisualizerRegressionTests(unittest.TestCase):
         result = TreeView(graph).render(workspace_id="test")
         self.assertIn("2026-08-01", result)
 
-    def test_plugins_return_html_without_core_dependency(self):
+    def test_visualizer_plugins_return_html(self):
         graph = Graph(nodes=[Node({"name": "Alice"}, 1)], edges=[])
         for visualizer in (SimpleVisualizer(), BlockVisualizer()):
             result = visualizer.visualize(graph, workspace_id="test")
