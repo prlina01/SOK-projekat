@@ -9,7 +9,7 @@ description = "CSV data source plugin for SOK Graph Project"
 requires-python = ">=3.10"
 dependencies = [
     "sok-graph-api",
-    "sok-graph-core",
+    "sok-graph-platform",
 ]
 
 [project.entry-points."sok_graph.data_sources"]

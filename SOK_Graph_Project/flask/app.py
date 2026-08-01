@@ -24,13 +24,13 @@ plugin_service.refresh_plugins()
 
 workspace_manager = WorkspaceManager()
 
-# Allow Flask to load templates both from flask/templates and core/templates
+# Allow Flask to load templates both from the web app and platform libraries.
 flask_templates = os.path.join(project_root, "flask", "templates")
-core_templates = os.path.join(project_root, "core", "templates")
+platform_templates = os.path.join(project_root, "platform", "templates")
 
 app.jinja_loader = ChoiceLoader([
     FileSystemLoader(flask_templates),
-    FileSystemLoader(core_templates)
+    FileSystemLoader(platform_templates)
 ])
 
 
@@ -246,9 +246,9 @@ def uninstall_plugin():
     return redirect(url_for("index"))
 
 
-@app.route("/core-assets/main_view/<path:filename>")
-def core_main_view_assets(filename):
-    assets_dir = os.path.join(project_root, "core", "assets", "main_view")
+@app.route("/platform-assets/main_view/<path:filename>")
+def platform_main_view_assets(filename):
+    assets_dir = os.path.join(project_root, "platform", "assets", "main_view")
     return send_from_directory(assets_dir, filename)
 
 

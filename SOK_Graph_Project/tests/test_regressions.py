@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[1]
 for package in (
     "api",
-    "core",
+    "platform",
     "plugins/csv_data_source",
     "plugins/json_data_source",
     "plugins/simple_visualizer",

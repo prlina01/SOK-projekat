@@ -9,7 +9,7 @@ from graph.api.model.node import Node
 from service.use_cases.data_source_service import DataSourceService
 
 if TYPE_CHECKING:
-	from core.service.use_cases.workspace import Workspace
+	from service.use_cases.workspace import Workspace
 
 
 class ConsoleWindow:
