@@ -150,7 +150,16 @@ class DataSourceService:
 
         edge_objects = []
 
-        for source, target in edges:
+        for edge in edges:
+            if isinstance(edge, dict):
+                source = edge.get("node1_index", edge.get("source"))
+                target = edge.get("node2_index", edge.get("target"))
+                edge_index = edge.get("index", edge.get("id"))
+                edge_data = DataSourceService.normalize_values(edge.get("data", {}))
+            else:
+                source, target = edge
+                edge_index = None
+                edge_data = {}
 
             if source not in node_map:
                 raise ValueError(f"Unknown node index: {source}")
@@ -161,7 +170,9 @@ class DataSourceService:
             edge_objects.append(
                 Edge(
                     node1=node_map[source],
-                    node2=node_map[target]
+                    node2=node_map[target],
+                    index=edge_index,
+                    data=edge_data
                 )
             )
 
@@ -195,8 +206,10 @@ class DataSourceService:
             ],
             "edges": [
                 {
+                    "index": edge.index,
                     "node1_index": edge.node1.index if edge.node1 else None,
-                    "node2_index": edge.node2.index if edge.node2 else None
+                    "node2_index": edge.node2.index if edge.node2 else None,
+                    "data": edge.data or {}
                 }
                 for edge in graph.edges
             ],
@@ -215,14 +228,9 @@ class DataSourceService:
         nodes = data.get("nodes", [])
         edges = data.get("edges", [])
 
-        edge_pairs = [
-            (e.get("node1_index"), e.get("node2_index"))
-            for e in edges
-        ]
-
         return DataSourceService.build_graph(
             nodes,
-            edge_pairs,
+            edges,
             directed=data.get("directed", True)
         )
 

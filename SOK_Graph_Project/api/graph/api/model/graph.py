@@ -183,8 +183,10 @@ class Graph:
             ],
             "edges": [
                 {
+                    "index": edge.index,
                     "node1_index": edge.node1.index if edge.node1 is not None else None,
                     "node2_index": edge.node2.index if edge.node2 is not None else None,
+                    "data": edge.data,
                 }
                 for edge in self.edges
             ],
