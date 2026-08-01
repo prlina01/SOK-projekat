@@ -42,10 +42,7 @@ def get_plugin_summary():
     return plugin_service.get_plugin_summary()
 
 
-def build_visualization_model(visualizer, graph, workspace_id):
-    """
-    Visualization plugins return a dict model, not HTML.
-    """
+def build_visualization_html(visualizer, graph, workspace_id):
     return visualizer.visualize(graph, workspace_id=workspace_id)
 
 
@@ -142,7 +139,7 @@ def render_index(
                 no_workspace=False,
             )
 
-    visualization_model = build_visualization_model(
+    graph_html = build_visualization_html(
         visualizer,
         workspace_filter.filtered_graph,
         active_workspace.id
@@ -157,8 +154,8 @@ def render_index(
     return render_template(
         "index.html",
         title=app.config["APP_NAME"],
-        graph_html="",
-        visualization_model=visualization_model,
+        graph_html=graph_html,
+        visualization_model=None,
         bird_view_html=bird_view_html,
         tree_view_html=tree_view_html,
         plugins=active_plugins["visualization"],
@@ -356,7 +353,7 @@ def execute_cli_command():
     else:
         response_code = 200
 
-    visualization_model = build_visualization_model(
+    graph_html = build_visualization_html(
         visualizer,
         graph_for_view,
         workspace.id
@@ -365,8 +362,8 @@ def execute_cli_command():
     bird_view_html = BirdView().render(workspace_id=workspace.id)
 
     return jsonify({
-        "graph_html": "",
-        "visualization_model": visualization_model,
+        "graph_html": graph_html,
+        "visualization_model": None,
         "tree_view_html": tree_view_html,
         "bird_view_html": bird_view_html,
         "cli_history": workspace.cli.command_history,
@@ -400,15 +397,15 @@ def apply_filter():
         return jsonify({"error": str(e)}), 400
 
     app.config["GRAPH"] = filtered_graph
-    visualization_model = build_visualization_model(
+    graph_html = build_visualization_html(
         visualizer,
         filtered_graph,
         workspace.id
     )
 
     return jsonify({
-        "graph_html": "",
-        "visualization_model": visualization_model,
+        "graph_html": graph_html,
+        "visualization_model": None,
         "tree_view_html": TreeView(filtered_graph).render(workspace_id=workspace.id),
         "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })
@@ -440,15 +437,15 @@ def clear_filters():
         return jsonify({"error": str(e)}), 400
 
     app.config["GRAPH"] = filtered_graph
-    visualization_model = build_visualization_model(
+    graph_html = build_visualization_html(
         visualizer,
         filtered_graph,
         workspace.id
     )
 
     return jsonify({
-        "graph_html": "",
-        "visualization_model": visualization_model,
+        "graph_html": graph_html,
+        "visualization_model": None,
         "tree_view_html": TreeView(filtered_graph).render(workspace_id=workspace.id),
         "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })
@@ -473,15 +470,15 @@ def search_graph():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
-    visualization_model = build_visualization_model(
+    graph_html = build_visualization_html(
         visualizer,
         result_graph,
         workspace.id
     )
 
     return jsonify({
-        "graph_html": "",
-        "visualization_model": visualization_model,
+        "graph_html": graph_html,
+        "visualization_model": None,
         "tree_view_html": TreeView(result_graph).render(workspace_id=workspace.id),
         "bird_view_html": BirdView().render(workspace_id=workspace.id)
     })

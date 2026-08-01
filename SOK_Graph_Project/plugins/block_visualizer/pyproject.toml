@@ -9,7 +9,6 @@ description = "Block visualizer plugin for SOK Graph Project"
 requires-python = ">=3.10"
 dependencies = [
     "sok-graph-api",
-    "sok-graph-core",
 ]
 
 [project.entry-points."sok_graph.visualizers"]

@@ -152,6 +152,10 @@ async function updateGraph(endpoint, payload) {
         }
 
         execNext(0);
+
+        if (window.renderCurrentVisualization) {
+            window.renderCurrentVisualization();
+        }
     }
 
     if (result.tree_view_html !== undefined) {

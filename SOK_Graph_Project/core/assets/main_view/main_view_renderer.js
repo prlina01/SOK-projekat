@@ -4,6 +4,15 @@
             return window.currentVisualizationModel;
         }
 
+        const pluginOutput = document.querySelector(".visualization-plugin-output");
+        if (pluginOutput && pluginOutput.dataset.visualizationModel) {
+            try {
+                return JSON.parse(pluginOutput.dataset.visualizationModel);
+            } catch (error) {
+                console.error("Failed to parse plugin visualization HTML", error);
+            }
+        }
+
         const modelTag = document.getElementById("current-visualization-model");
         if (!modelTag) return null;
 
