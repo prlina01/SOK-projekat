@@ -324,12 +324,14 @@
             `;
 
             overlay.style.display = pinned ? "block" : "none";
+            modal.style.pointerEvents = pinned ? "auto" : "none";
             modal.style.display = "block";
         }
 
         function hideModal() {
             detailsPinned = false;
             overlay.style.display = "none";
+            modal.style.pointerEvents = "none";
             modal.style.display = "none";
         }
 
