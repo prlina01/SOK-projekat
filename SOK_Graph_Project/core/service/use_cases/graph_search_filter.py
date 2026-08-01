@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import date, datetime
+
 from graph.api.model.graph import Graph
 
 
@@ -89,42 +91,49 @@ class GraphSearchFilter:
 
 	def _matches_operator(self, node_value, operator: str, expected_value: str) -> bool:
 		operator = (operator or "=").strip()
+		if operator not in {"=", "==", "!=", "<", "<=", ">", ">="}:
+			raise ValueError(f"Unsupported filter operator: {operator}")
 
-		if operator == "=":
-			return str(node_value) == str(expected_value)
+		expected = self._coerce_expected_value(node_value, expected_value)
 
-		left_number = self._to_float(node_value)
-		right_number = self._to_float(expected_value)
-
-		if left_number is not None and right_number is not None:
-			if operator == "<":
-				return left_number < right_number
-			if operator == "<=":
-				return left_number <= right_number
-			if operator == ">":
-				return left_number > right_number
-			if operator == ">=":
-				return left_number >= right_number
-
-		left_text = str(node_value)
-		right_text = str(expected_value)
-
+		if operator in {"=", "=="}:
+			return node_value == expected
+		if operator == "!=":
+			return node_value != expected
 		if operator == "<":
-			return left_text < right_text
+			return node_value < expected
 		if operator == "<=":
-			return left_text <= right_text
+			return node_value <= expected
 		if operator == ">":
-			return left_text > right_text
-		if operator == ">=":
-			return left_text >= right_text
+			return node_value > expected
+		return node_value >= expected
 
-		return False
-
-	def _to_float(self, value):
+	def _coerce_expected_value(self, node_value, expected_value):
 		try:
-			return float(value)
-		except (TypeError, ValueError):
-			return None
+			if isinstance(node_value, bool):
+				value = str(expected_value).strip().lower()
+				if value not in {"true", "false"}:
+					raise ValueError
+				return value == "true"
+			if isinstance(node_value, int):
+				return int(expected_value)
+			if isinstance(node_value, float):
+				return float(expected_value)
+			if isinstance(node_value, datetime):
+				return datetime.fromisoformat(str(expected_value).replace("Z", "+00:00"))
+			if isinstance(node_value, date):
+				return date.fromisoformat(str(expected_value))
+			if isinstance(node_value, str):
+				return str(expected_value)
+		except (TypeError, ValueError) as exc:
+			raise ValueError(
+				f"Value '{expected_value}' does not match attribute type "
+				f"{type(node_value).__name__}"
+			) from exc
+
+		raise ValueError(
+			f"Filtering values of type {type(node_value).__name__} is not supported"
+		)
 
 	def _node_contains(self, node_data: dict, query: str) -> bool:
 		for key, value in node_data.items():
