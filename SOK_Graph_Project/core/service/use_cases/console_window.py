@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from graph.api.model.edge import Edge
 from graph.api.model.node import Node
+from service.use_cases.data_source_service import DataSourceService
 
 if TYPE_CHECKING:
 	from core.service.use_cases.workspace import Workspace
@@ -189,13 +190,7 @@ class ConsoleWindow:
 		return parsed
 
 	def _normalize_scalar(self, value):
-		text = str(value)
-		if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
-			try:
-				return int(text)
-			except ValueError:
-				return text
-		return text
+		return DataSourceService.parse_scalar(value)
 
 	def _find_node(self, graph, node_id):
 		for node in graph.nodes:
