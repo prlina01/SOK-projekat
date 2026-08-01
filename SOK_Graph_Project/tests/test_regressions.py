@@ -23,6 +23,7 @@ from graph_csv_source.plugin_main import CsvDataSourcePlugin
 from graph_json_source.plugin_main import JsonDataSourcePlugin
 from graph_simple_visualizer.plugin_main import SimpleVisualizer
 from service.use_cases.graph_search_filter import GraphSearchFilter
+from service.use_cases.tree_view import TreeView
 from service.use_cases.workspace import Workspace
 
 
@@ -103,6 +104,11 @@ class QueryAndCliRegressionTests(unittest.TestCase):
 
 
 class VisualizerRegressionTests(unittest.TestCase):
+    def test_tree_view_serializes_date_values(self):
+        graph = Graph(nodes=[Node({"created": date(2026, 8, 1)}, 1)], edges=[])
+        result = TreeView(graph).render(workspace_id="test")
+        self.assertIn("2026-08-01", result)
+
     def test_plugins_return_html_without_core_dependency(self):
         graph = Graph(nodes=[Node({"name": "Alice"}, 1)], edges=[])
         for visualizer in (SimpleVisualizer(), BlockVisualizer()):

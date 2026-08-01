@@ -151,7 +151,12 @@ class TreeView:
             return (1, str(value))
 
     def _render_lazy_forest(self, node_map, adjacency, undirected_adjacency, root_ids, workspace_id):
-        node_map_json = json.dumps(node_map)
+        node_map_json = json.dumps(
+            node_map,
+            default=lambda value: value.isoformat()
+            if hasattr(value, "isoformat")
+            else str(value)
+        )
         adjacency_json = json.dumps(adjacency)
         workspace_id_json = json.dumps(str(workspace_id))
         root_ids_json = json.dumps(root_ids)
