@@ -61,6 +61,8 @@ class ConsoleWindow:
 			return self._delete_edge(args)
 		if command_name == "edit_edge":
 			return self._edit_edge(args)
+		if command_name == "clear_graph":
+			return self._clear_graph()
 
 		raise ValueError(f"Unsupported command: {command_name}")
 
@@ -208,6 +210,17 @@ class ConsoleWindow:
 		return {
 			"display_graph": self.workspace.search_filter.filtered_graph,
 			"message": f"Edited edge {edge.index or ''}".strip(),
+		}
+
+	def _clear_graph(self):
+		graph = self.workspace.graph
+		graph.nodes.clear()
+		graph.edges.clear()
+		graph.cyclic = False
+		self.workspace.search_filter.set_source_graph(graph)
+		return {
+			"display_graph": self.workspace.search_filter.filtered_graph,
+			"message": "Cleared the graph",
 		}
 
 	def _required_arg(self, args: dict, name: str):
