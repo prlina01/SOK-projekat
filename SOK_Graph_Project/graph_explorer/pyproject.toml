@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sok-graph-explorer"
+version = "1.0.0"
+description = "Flask web application for exploring graphs through installed plugins"
+requires-python = ">=3.10"
+dependencies = [
+    "Flask>=3.0",
+    "sok-graph-platform",
+    "sok-graph-csv-data-source",
+    "sok-graph-json-data-source",
+    "sok-graph-simple-visualizer",
+    "sok-graph-block-visualizer",
+]
+
+[project.scripts]
+sok-graph-explorer = "graph_explorer.app:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["graph_explorer*"]
+
+[tool.setuptools.package-data]
+graph_explorer = ["templates/*.html", "static/*.css", "static/*.js"]

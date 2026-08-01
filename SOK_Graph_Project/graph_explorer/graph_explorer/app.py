@@ -6,7 +6,7 @@ import subprocess
 from jinja2 import ChoiceLoader, FileSystemLoader
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from service.use_cases.workspace import Workspace
 from service.use_cases.workspace_manager import WorkspaceManager
@@ -25,11 +25,11 @@ plugin_service.refresh_plugins()
 workspace_manager = WorkspaceManager()
 
 # Allow Flask to load templates both from the web app and platform libraries.
-flask_templates = os.path.join(project_root, "flask", "templates")
+web_templates = os.path.join(os.path.dirname(__file__), "templates")
 platform_templates = os.path.join(project_root, "platform", "templates")
 
 app.jinja_loader = ChoiceLoader([
-    FileSystemLoader(flask_templates),
+    FileSystemLoader(web_templates),
     FileSystemLoader(platform_templates)
 ])
 
@@ -484,5 +484,9 @@ def search_graph():
     })
 
 
-if __name__ == "__main__":
+def main():
     app.run(debug=True)
+
+
+if __name__ == "__main__":
+    main()
