@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class ConsoleWindow:
-	FILTER_PATTERN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s*(<=|>=|=|<|>)\s*(.+)$")
+	FILTER_PATTERN = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s*(==|!=|<=|>=|=|<|>)\s*(.+)$")
 
 	def __init__(self, workspace: Workspace):
 		self.workspace = workspace
