@@ -1,7 +1,9 @@
 .idea
 __pycache__
-SOK_Graph_Project/flask/venv
 SOK_Graph_Project/venv
+SOK_Graph_Project/.venv/
+SOK_Graph_Project/.graph_explorer.pid
+SOK_Graph_Project/.graph_explorer.log
 __pycache__/
 *.egg-info/
 build/

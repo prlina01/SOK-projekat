@@ -487,7 +487,10 @@ def search_graph():
 
 
 def main():
-    app.run(debug=True)
+    host = os.environ.get("SOK_GRAPH_HOST", "127.0.0.1")
+    port = int(os.environ.get("SOK_GRAPH_PORT", "5000"))
+    debug = os.environ.get("SOK_GRAPH_DEBUG", "false").lower() == "true"
+    app.run(host=host, port=port, debug=debug, use_reloader=False)
 
 
 if __name__ == "__main__":
