@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-08-29T00:00:00.000Z" agent="Codex" version="26.0.9" type="device" compressed="false">
+  <diagram id="sok-class-diagram" name="Dijagram klasa">
+    <mxGraphModel dx="1900" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="edge" value="&lt;div style=&quot;text-align:center;font-size:18px&quot;&gt;&lt;b&gt;Edge&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;− node1: Node&lt;br&gt;− node2: Node&lt;br&gt;− data: dict&lt;br&gt;+ index: Any&lt;hr&gt;+ __init__(node1, node2, data, index)&lt;br&gt;+ swapDirections()&lt;br&gt;+ toString(): str&lt;br&gt;− validateNode(node)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="55" width="300" height="255" as="geometry"/>
+        </mxCell>
+        <mxCell id="graph" value="&lt;div style=&quot;text-align:center;font-size:18px&quot;&gt;&lt;b&gt;Graph&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;− nodes: List&amp;lt;Node&amp;gt;&lt;br&gt;− edges: List&amp;lt;Edge&amp;gt;&lt;br&gt;− cyclic: bool&lt;br&gt;− directed: bool&lt;hr&gt;+ addNode(node)&lt;br&gt;+ addEdge(edge)&lt;br&gt;+ removeEdgeByNodes(node1, node2)&lt;br&gt;+ removeEdge(edge)&lt;br&gt;+ removeNode(node)&lt;br&gt;+ removeNodeByIndex(index)&lt;br&gt;+ getConnectedOf(node): List&lt;br&gt;+ toDict(): dict&lt;br&gt;− isNodeConnected(node)&lt;br&gt;− validateNode(node)&lt;br&gt;− validateEdge(edge)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="400" y="120" width="370" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="node" value="&lt;div style=&quot;text-align:center;font-size:18px&quot;&gt;&lt;b&gt;Node&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;− data: dict&lt;br&gt;− index: Any&lt;hr&gt;+ __init__(data, index)&lt;br&gt;+ addData(key, value)&lt;br&gt;+ removeData(key)&lt;br&gt;+ toString(): str&lt;br&gt;− normalizeData(data)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="830" y="55" width="300" height="230" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Plugin&lt;/i&gt;&lt;/div&gt;&lt;hr&gt;+ name(): str&lt;br&gt;+ identifier(): str" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="55" width="210" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="data-source-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;DataSourcePlugin&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ load(**kwargs): Graph" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="230" width="290" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="visualization-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;VisualizationPlugin&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ visualize(graph, **kwargs): str" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1510" y="230" width="320" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="json-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;JsonDataSourcePlugin&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ load(): Graph&lt;br&gt;+ save(graph)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=13;align=left;verticalAlign=top;spacing=7;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="400" width="230" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="csv-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;CsvDataSourcePlugin&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ load(): Graph&lt;br&gt;− loadSingleCsv()&lt;br&gt;− loadCsvFolder()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=13;align=left;verticalAlign=top;spacing=7;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="400" width="230" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="block-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;BlockVisualizer&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ visualize(): str" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=13;align=left;verticalAlign=top;spacing=7;" vertex="1" parent="1">
+          <mxGeometry x="1560" y="400" width="190" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="simple-plugin" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;SimpleVisualizer&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ visualize(): str" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=13;align=left;verticalAlign=top;spacing=7;" vertex="1" parent="1">
+          <mxGeometry x="1770" y="400" width="190" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="data-source-service" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;DataSourceService&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ parseScalar(value)&lt;br&gt;+ requireSourcePath(path)&lt;br&gt;+ readJson(path)&lt;br&gt;+ writeJson(path, data)&lt;br&gt;+ buildGraph(nodes, edges): Graph&lt;br&gt;+ graphToDict(graph): dict&lt;br&gt;+ dictToGraph(data): Graph&lt;br&gt;+ detectCycle(...): bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="610" width="350" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="visualization-service" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;visualization «module»&lt;/b&gt;&lt;/div&gt;&lt;hr&gt;+ graphData(graph): dict&lt;br&gt;+ visualizationHtml(...): str" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0A8;strokeColor=#4D4D4D;strokeWidth=2;fontFamily=Arial;fontSize=14;align=left;verticalAlign=top;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1590" y="610" width="300" height="130" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="graph-edge" value="1      *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=0;endArrow=none;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="graph" target="edge"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="graph-node" value="1      *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=diamondThin;startFill=0;endArrow=none;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="graph" target="node"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="edge-node" value="*                         *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;exitX=0.5;exitY=0;entryX=0.5;entryY=0;" edge="1" parent="1" source="edge" target="node"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="190" y="30"/><mxPoint x="980" y="30"/></Array></mxGeometry></mxCell>
+
+        <mxCell id="dsp-plugin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="data-source-plugin" target="plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="vp-plugin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="visualization-plugin" target="plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="json-dsp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="json-plugin" target="data-source-plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="csv-dsp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="csv-plugin" target="data-source-plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="block-vp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="block-plugin" target="visualization-plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="simple-vp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;strokeColor=#4D4D4D;strokeWidth=2;" edge="1" parent="1" source="simple-plugin" target="visualization-plugin"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="json-service" value="uses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#4D4D4D;" edge="1" parent="1" source="json-plugin" target="data-source-service"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="csv-service" value="uses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#4D4D4D;" edge="1" parent="1" source="csv-plugin" target="data-source-service"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="block-service" value="uses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#4D4D4D;" edge="1" parent="1" source="block-plugin" target="visualization-service"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="simple-service" value="uses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#4D4D4D;" edge="1" parent="1" source="simple-plugin" target="visualization-service"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="900" viewBox="0 0 2000 900">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#ffffff"/>
+      <circle cx="1" cy="1" r="1" fill="#bcc3ca"/>
+    </pattern>
+    <style>
+      .box { fill:#ffe0a8; stroke:#555; stroke-width:2; }
+      .head { fill:#ffd59a; stroke:#555; stroke-width:2; }
+      .name { font-family:Arial; font-size:18px; font-weight:bold; text-anchor:middle; fill:#111; }
+      .abstract { font-family:Arial; font-size:18px; font-weight:bold; font-style:italic; text-anchor:middle; fill:#111; }
+      .member { font-family:Arial; font-size:14px; fill:#111; }
+      .small { font-family:Arial; font-size:13px; fill:#111; }
+      .line { fill:none; stroke:#444; stroke-width:2; }
+      .dep { fill:none; stroke:#555; stroke-width:1.8; stroke-dasharray:7 5; }
+      .label { font-family:Arial; font-size:13px; fill:#333; }
+    </style>
+  </defs>
+  <rect width="2000" height="900" fill="#fff"/>
+  <rect x="35" y="25" width="1930" height="840" fill="#ffffff"/>
+
+  <!-- Relationships -->
+  <path class="line" d="M400 200 H340"/>
+  <path d="M400 200 l-12 -8 l-12 8 l12 8 Z" fill="#fff" stroke="#444" stroke-width="2"/>
+  <text class="label" x="350" y="190">1</text><text class="label" x="325" y="190">*</text>
+  <path class="line" d="M770 200 H830"/>
+  <path d="M770 200 l12 -8 l12 8 l-12 8 Z" fill="#fff" stroke="#444" stroke-width="2"/>
+  <text class="label" x="785" y="190">1</text><text class="label" x="815" y="190">*</text>
+  <path class="line" d="M190 55 V35 H980 V55"/>
+  <path d="M973 43 L980 55 L987 43" fill="none" stroke="#444" stroke-width="2"/>
+  <text class="label" x="205" y="49">*</text><text class="label" x="955" y="49">*</text>
+
+  <path class="line" d="M1305 230 V195 H1410 V165"/>
+  <path class="line" d="M1670 230 V195 H1500 V165"/>
+  <polygon points="1410,165 1401,181 1419,181" fill="#fff" stroke="#444" stroke-width="2"/>
+  <polygon points="1500,165 1491,181 1509,181" fill="#fff" stroke="#444" stroke-width="2"/>
+  <path class="line" d="M1150 400 V365 H1260 V330"/>
+  <path class="line" d="M1415 400 V365 H1350 V330"/>
+  <path class="line" d="M1650 400 V365 H1625 V330"/>
+  <path class="line" d="M1870 400 V365 H1730 V330"/>
+  <polygon points="1260,330 1251,346 1269,346" fill="#fff" stroke="#444" stroke-width="2"/>
+  <polygon points="1350,330 1341,346 1359,346" fill="#fff" stroke="#444" stroke-width="2"/>
+  <polygon points="1625,330 1616,346 1634,346" fill="#fff" stroke="#444" stroke-width="2"/>
+  <polygon points="1730,330 1721,346 1739,346" fill="#fff" stroke="#444" stroke-width="2"/>
+
+  <path class="dep" d="M1150 505 V565 H1240 V610"/>
+  <path class="dep" d="M1415 520 V565 H1330 V610"/>
+  <path class="dep" d="M1650 490 V550 H1670 V610"/>
+  <path class="dep" d="M1870 490 V550 H1770 V610"/>
+  <text class="label" x="1160" y="560">uses</text><text class="label" x="1370" y="560">uses</text>
+  <text class="label" x="1660" y="545">uses</text><text class="label" x="1820" y="545">uses</text>
+
+  <!-- Edge -->
+  <g>
+    <rect class="box" x="40" y="55" width="300" height="255"/>
+    <rect class="head" x="40" y="55" width="300" height="36"/>
+    <text class="name" x="190" y="79">Edge</text>
+    <line class="line" x1="40" y1="155" x2="340" y2="155"/>
+    <text class="member" x="52" y="113">− node1: Node</text><text class="member" x="52" y="134">− node2: Node</text><text class="member" x="190" y="113">− data: dict</text><text class="member" x="190" y="134">+ index: Any</text>
+    <text class="member" x="52" y="179">+ __init__(node1, node2, data, index)</text>
+    <text class="member" x="52" y="202">+ swapDirections()</text><text class="member" x="52" y="225">+ toString(): str</text><text class="member" x="52" y="248">− validateNode(node)</text>
+  </g>
+
+  <!-- Graph -->
+  <g>
+    <rect class="box" x="400" y="120" width="370" height="410"/>
+    <rect class="head" x="400" y="120" width="370" height="36"/>
+    <text class="name" x="585" y="144">Graph</text>
+    <line class="line" x1="400" y1="250" x2="770" y2="250"/>
+    <text class="member" x="412" y="180">− nodes: List&lt;Node&gt;</text><text class="member" x="412" y="202">− edges: List&lt;Edge&gt;</text><text class="member" x="412" y="224">− cyclic: bool</text><text class="member" x="580" y="224">− directed: bool</text>
+    <text class="member" x="412" y="276">+ addNode(node)</text><text class="member" x="412" y="299">+ addEdge(edge)</text>
+    <text class="member" x="412" y="322">+ removeEdgeByNodes(node1, node2)</text><text class="member" x="412" y="345">+ removeEdge(edge)</text>
+    <text class="member" x="412" y="368">+ removeNode(node)</text><text class="member" x="412" y="391">+ removeNodeByIndex(index)</text>
+    <text class="member" x="412" y="414">+ getConnectedOf(node): List</text><text class="member" x="412" y="437">+ toDict(): dict</text>
+    <text class="member" x="412" y="460">− isNodeConnected(node)</text><text class="member" x="412" y="483">− validateNode(node)</text><text class="member" x="412" y="506">− validateEdge(edge)</text>
+  </g>
+
+  <!-- Node -->
+  <g>
+    <rect class="box" x="830" y="55" width="300" height="230"/>
+    <rect class="head" x="830" y="55" width="300" height="36"/>
+    <text class="name" x="980" y="79">Node</text>
+    <line class="line" x1="830" y1="140" x2="1130" y2="140"/>
+    <text class="member" x="842" y="113">− data: dict</text><text class="member" x="990" y="113">− index: Any</text>
+    <text class="member" x="842" y="165">+ __init__(data, index)</text><text class="member" x="842" y="188">+ addData(key, value)</text>
+    <text class="member" x="842" y="211">+ removeData(key)</text><text class="member" x="842" y="234">+ toString(): str</text><text class="member" x="842" y="257">− normalizeData(data)</text>
+  </g>
+
+  <!-- Plugin hierarchy -->
+  <g><rect class="box" x="1350" y="55" width="210" height="110"/><rect class="head" x="1350" y="55" width="210" height="36"/><text class="abstract" x="1455" y="79">Plugin</text><text class="member" x="1362" y="116">+ name(): str</text><text class="member" x="1362" y="140">+ identifier(): str</text></g>
+  <g><rect class="box" x="1160" y="230" width="290" height="100"/><rect class="head" x="1160" y="230" width="290" height="36"/><text class="name" x="1305" y="254">DataSourcePlugin</text><text class="member" x="1172" y="296">+ load(**kwargs): Graph</text></g>
+  <g><rect class="box" x="1510" y="230" width="320" height="100"/><rect class="head" x="1510" y="230" width="320" height="36"/><text class="name" x="1670" y="254">VisualizationPlugin</text><text class="member" x="1522" y="296">+ visualize(graph, **kwargs): str</text></g>
+
+  <g><rect class="box" x="1040" y="400" width="230" height="105"/><rect class="head" x="1040" y="400" width="230" height="36"/><text class="name" x="1155" y="424" font-size="15">JsonDataSourcePlugin</text><text class="small" x="1052" y="462">+ load(): Graph</text><text class="small" x="1052" y="486">+ save(graph)</text></g>
+  <g><rect class="box" x="1300" y="400" width="230" height="120"/><rect class="head" x="1300" y="400" width="230" height="36"/><text class="name" x="1415" y="424" font-size="15">CsvDataSourcePlugin</text><text class="small" x="1312" y="460">+ load(): Graph</text><text class="small" x="1312" y="482">− loadSingleCsv()</text><text class="small" x="1312" y="504">− loadCsvFolder()</text></g>
+  <g><rect class="box" x="1560" y="400" width="190" height="90"/><rect class="head" x="1560" y="400" width="190" height="36"/><text class="name" x="1655" y="424" font-size="15">BlockVisualizer</text><text class="small" x="1572" y="466">+ visualize(): str</text></g>
+  <g><rect class="box" x="1770" y="400" width="190" height="90"/><rect class="head" x="1770" y="400" width="190" height="36"/><text class="name" x="1865" y="424" font-size="15">SimpleVisualizer</text><text class="small" x="1782" y="466">+ visualize(): str</text></g>
+
+  <!-- Services -->
+  <g>
+    <rect class="box" x="1110" y="610" width="350" height="240"/><rect class="head" x="1110" y="610" width="350" height="36"/><text class="name" x="1285" y="634">DataSourceService</text>
+    <text class="member" x="1122" y="672">+ parseScalar(value)</text><text class="member" x="1122" y="694">+ requireSourcePath(path)</text><text class="member" x="1122" y="716">+ readJson(path)</text><text class="member" x="1122" y="738">+ writeJson(path, data)</text><text class="member" x="1122" y="760">+ buildGraph(nodes, edges): Graph</text><text class="member" x="1122" y="782">+ graphToDict(graph): dict</text><text class="member" x="1122" y="804">+ dictToGraph(data): Graph</text><text class="member" x="1122" y="826">+ detectCycle(...): bool</text>
+  </g>
+  <g>
+    <rect class="box" x="1590" y="610" width="300" height="130"/><rect class="head" x="1590" y="610" width="300" height="36"/><text class="name" x="1740" y="634" font-size="16">visualization «module»</text><text class="member" x="1602" y="674">+ graphData(graph): dict</text><text class="member" x="1602" y="698">+ visualizationHtml(...): str</text>
+  </g>
+</svg>
